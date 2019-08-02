@@ -1,1 +1,3 @@
 build-php.hxml
+--next
+build-js.hxml

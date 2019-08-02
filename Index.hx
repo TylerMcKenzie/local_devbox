@@ -4,9 +4,7 @@ class Index
 {
     public static function main()
     {
-        #if php
-        var app = new src.Php.App();
+        var app = new src.App();
         app.run();
-        #end
     }
 }
