@@ -12,7 +12,7 @@ class App
 
     public function run()
     {
-        var host = new Host("localhost");
+        var host = new Host("0.0.0.0");
         var socket = new Socket();
         socket.bind(host, 3000);
         socket.listen(1);
