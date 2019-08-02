@@ -1,0 +1,9 @@
+-dce full
+
+-cp src/
+
+-D php7
+
+-php bin/php
+
+-main Index

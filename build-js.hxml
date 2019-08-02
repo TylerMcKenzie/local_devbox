@@ -1,0 +1,11 @@
+-dce full
+
+-cp src/
+
+-D js-es=6
+
+-lib hxnodejs
+
+-js bin/js
+
+-main Index
