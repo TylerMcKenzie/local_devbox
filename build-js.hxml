@@ -6,6 +6,6 @@
 
 -lib hxnodejs
 
--js bin/js
+-js bin/js/index.js
 
 -main Index
