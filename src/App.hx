@@ -45,10 +45,21 @@ class App
         #if js
         trace("Starting server...");
         var app : Express = new Express();
-        trace(Node.__dirname);
-        
-        // app.set('views', Node.__dirname + '/src/views');
+        app.set('port', 3000);
+        // app.set('views', Node.__dirname + '/public/views');
+        var VIEWS_PATH = Node.__dirname + '/public/views';
 
+        app.use(BodyParser.json());
+        app.use(BodyParser.urlencoded({ extended : true}));
+        app.use(new Static(Path.join(Node.__dirname, 'public')));
+
+        app.get('/mergetool', function(request: Request, response: Response) {
+            response.sendFile(VIEWS_PATH + "/mergetool.html");
+        });
+
+        app.listen(app.get('port'), function(){
+            trace('Express server listening on port ' + app.get('port'));
+        });
         #end
     }
 }
