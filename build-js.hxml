@@ -4,8 +4,14 @@
 
 -D js-es=6
 
+-lib js-kit
 -lib hxnodejs
 
 -js bin/js/index.js
 
 -main Index
+
+-cmd if [ ! -d bin/js/public ]; then mkdir -p bin/js/public/views ; fi
+-cmd cp -r src/views/* bin/js/public/views/
+
+-cmd node bin/js/index.js

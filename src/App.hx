@@ -2,9 +2,13 @@ package src;
 
 #if js
 import haxe.Json;
-import js.node.Http;
+import js.Node;
 import js.node.Fs;
+import js.node.Http;
+import js.node.Path;
 import js.node.ChildProcess.spawn;
+import js.npm.Express;
+import js.npm.express.*;
 #end
 
 #if sys
@@ -40,58 +44,63 @@ class App
 
         #if js
         trace("Starting server...");
-        var server = Http.createServer(function(request, response) {
-            // Routing will be gross till I get a better idea what i want
-            //mergetool
-            switch request.url {
-                case "/mergetool":
-                    switch request.method {
-                        case "POST":
-                        case "GET":
-                            var contentIndex = request.rawHeaders.indexOf("Content-Type");
-                            if (contentIndex > -1) {
-                                switch (request.rawHeaders[contentIndex + 1]) {
-                                    case "application/json":
-                                        // Todo json stuff here
-                                        var ls = spawn("ls", ["-al"]);
-                                        var jsonData = '';
-                                        ls.stdout.on('data', function(data) {
-                                            jsonData = Json.stringify({msg: data.toString()});
-                                            trace(jsonData);
-                                            response.setHeader("Content-Type", "application/json");
-                                            response.write(jsonData);
-                                            response.end();
-                                        });
+        var app : Express = new Express();
+        trace(Node.__dirname);
+        
+        // app.set('views', Node.__dirname + '/src/views');
 
-                                        ls.on('close', function(code) {
-                                            trace('ls exit with code: ${code}');
-                                        });
-
-                                }
-                            } else {
-                                // Default is return mergetool view
-                                Fs.readFile("./src/views/mergetool.html", null, function(error, data) {
-                                    if (error != null) {
-                                        response.writeHead(404);
-                                        response.end();
-                                    } else {
-                                        response.writeHead(200, {
-                                            'Content-type': 'text/html'
-                                        });
-
-                                        response.write(data);
-                                        response.end();
-                                    }
-                                });
-                            }
-
-                        case _:
-                    }
-                case _:
-            }
-        });
-
-        server.listen(3000, "0.0.0.0");
         #end
     }
 }
+
+// TODO MOVE THIS SOMEWHERE FOR SOME REFERENCE
+// var server = Http.createServer(function(request, response) {
+//             // Routing will be gross till I get a better idea what i want
+//             //mergetool
+//             switch request.url {
+//                 case "/mergetool":
+//                     switch request.method {
+//                         case "POST":
+//                         case "GET":
+//                             var contentIndex = request.rawHeaders.indexOf("Content-Type");
+//                             if (contentIndex > -1) {
+//                                 switch (request.rawHeaders[contentIndex + 1]) {
+//                                     case "application/json":
+//                                         // Todo json stuff here
+//                                         var ls = spawn("ls", ["-al"]);
+//                                         var jsonData = '';
+//                                         ls.stdout.on('data', function(data) {
+//                                             jsonData = Json.stringify({msg: data.toString()});
+//                                             trace(jsonData);
+//                                             response.setHeader("Content-Type", "application/json");
+//                                             response.write(jsonData);
+//                                             response.end();
+//                                         });
+
+//                                         ls.on('close', function(code) {
+//                                             trace('ls exit with code: ${code}');
+//                                         });
+
+//                                 }
+//                             } else {
+//                                 // Default is return mergetool view
+//                                 Fs.readFile("./src/views/mergetool.html", null, function(error, data) {
+//                                     if (error != null) {
+//                                         response.writeHead(404);
+//                                         response.end();
+//                                     } else {
+//                                         response.writeHead(200, {
+//                                             'Content-type': 'text/html'
+//                                         });
+
+//                                         response.write(data);
+//                                         response.end();
+//                                     }
+//                                 });
+//                             }
+
+//                         case _:
+//                     }
+//                 case _:
+//             }
+//         });

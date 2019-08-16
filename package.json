@@ -1,0 +1,19 @@
+{
+  "name": "local_devbox",
+  "version": "1.0.0",
+  "description": "",
+  "main": "bin/js/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TylerMcKenzie/local_devbox.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/TylerMcKenzie/local_devbox/issues"
+  },
+  "homepage": "https://github.com/TylerMcKenzie/local_devbox#readme"
+}
