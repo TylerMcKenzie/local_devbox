@@ -1,7 +1,5 @@
 -dce full
 
--cp src/
-
 -D js-es=6
 
 -lib js-kit

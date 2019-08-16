@@ -46,7 +46,7 @@ class App
         trace("Starting server...");
         var app : Express = new Express();
         app.set('port', 3000);
-        // app.set('views', Node.__dirname + '/public/views');
+        // app.set('views', Node.__dirname + '/public/views'); // View engine views location
         var VIEWS_PATH = Node.__dirname + '/public/views';
 
         app.use(BodyParser.json());
@@ -57,7 +57,7 @@ class App
             response.sendFile(VIEWS_PATH + "/mergetool.html");
         });
 
-        app.listen(app.get('port'), function(){
+        app.listen(app.get('port'), function() {
             trace('Express server listening on port ' + app.get('port'));
         });
         #end

@@ -1,0 +1,10 @@
+-dce full
+
+-cp src/js
+
+-D js-es=6
+-D noEmbedJS
+
+--each
+-js src/view-js/mergetool.js
+-main MergeTool
