@@ -57,6 +57,19 @@ class App
             response.sendFile(VIEWS_PATH + "/mergetool.html");
         });
 
+        app.post('/mergetool', function(request: Request, response: Response) {
+            var ls_spawn = spawn("ls", ["-al"]);
+            var json_message = null;
+
+            ls_spawn.stdout.on("data", function(data) {
+                json_message = data.toString();
+            });
+
+            ls_spawn.on("close", function() {
+                response.json({msg: json_message});
+            });
+        });
+
         app.listen(app.get('port'), function() {
             trace('Express server listening on port ' + app.get('port'));
         });
