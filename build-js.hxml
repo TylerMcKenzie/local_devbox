@@ -15,6 +15,6 @@ build-view-js.hxml
 -cmd if [ ! -d bin/js/public/views ]; then mkdir -p bin/js/public/views ; fi
 -cmd if [ ! -d bin/js/public/js ]; then mkdir -p bin/js/public/js ; fi
 -cmd cp -r src/views/* bin/js/public/views/
--cmd cp -r src/view-js/* bin/js/public/js/
+-cmd cp -r bin/view-js/* bin/js/public/js/
 
--cmd node bin/js/index.js
+# -cmd node bin/js/index.js

@@ -6,7 +6,6 @@
 -D noEmbedJS
 
 --each
-src.js.MergeTool
--js src/view-js/mergetool.js
-# -main src.js.MergeTool
+-js bin/view-js/mergetool.js
+-main src.js.MergeTool
 --next

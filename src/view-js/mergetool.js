@@ -2,5 +2,8 @@
 (function () { "use strict";
 var src_js_MergeTool = function() { };
 src_js_MergeTool.main = function() {
+	window.console.log("HELLO");
+	window.console.log("GOODBYE");
 };
+src_js_MergeTool.main();
 })();
