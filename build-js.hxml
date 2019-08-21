@@ -4,13 +4,16 @@ build-view-js.hxml
 
 -D js-es=6
 
+-lib js-kit
 -lib hxnodejs
 
 -js bin/js/index.js
 
 -main Index
 
--cmd if [ ! -d bin/js/public ]; then mkdir -p bin/js/public/views ; mkdir bin/js/public/jsha fi
+-cmd if [ ! -d bin/js/public ]; then mkdir -p bin/js/public ; fi
+-cmd if [ ! -d bin/js/public/views ]; then mkdir -p bin/js/public/views ; fi
+-cmd if [ ! -d bin/js/public/js ]; then mkdir -p bin/js/public/js ; fi
 -cmd cp -r src/views/* bin/js/public/views/
 -cmd cp -r src/view-js/* bin/js/public/js/
 
