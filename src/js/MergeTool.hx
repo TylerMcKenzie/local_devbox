@@ -24,11 +24,11 @@ class MergeTool
 
         // Get current diff data
         // Service get data
-        // return model with data
+        // return model with data 
         var r = service.createRequest(
             "/mergetool",
             function (data: String) {
-                console.log(data);
+                console.log(haxe.Json.parse(data));
             }
         );
 
