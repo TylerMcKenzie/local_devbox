@@ -68,6 +68,8 @@ class App
                 switch (processName) {
                     case "get-diff-filenames":
                         eventEmitter.emit("get-file-diffs", data.files);
+                    case "process-diff-objects":
+                        // send diff data to browser
                 }
             });
 
@@ -109,21 +111,12 @@ class App
                     process.stdout.on("data", function(buf) {
                         var diff = buf.toString();
 
-                        processing = false;
+                        // process diff data
                     });
-
-                    process.on("close", function() {
-                        processing = false;
-                    });
-
-                    while (processing) {
-
-                    }
-
-                    Node.console.log("Completed file: %s", filename);
                 }
 
-                Node.console.log("Completed files");
+                // get full file content
+                
             });
 
             // After geting diff files 
