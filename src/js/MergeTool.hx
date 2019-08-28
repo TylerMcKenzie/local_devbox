@@ -28,7 +28,9 @@ class MergeTool
         var r = service.createRequest(
             "/mergetool",
             function (data: String) {
-                console.log(haxe.Json.parse(data));
+                var fileData = haxe.Json.parse(data);
+                console.log(fileData);
+                view.renderFile(fileData[2]);
             }
         );
 

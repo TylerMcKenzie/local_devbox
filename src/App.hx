@@ -2,6 +2,7 @@ package src;
 
 #if js
 import haxe.Json;
+import js.Promise;
 import js.Node;
 import js.node.events.EventEmitter;
 import js.node.Fs;
@@ -104,26 +105,67 @@ class App
             }
 
             eventEmitter.on("get-file-diffs", function(files: Array<String>) {
-                for (filename in files) {
-                    var processing = true;
-                    var process = spawn("git", ["diff", "-U0", filename]);
-                    
-                    process.stdout.on("data", function(buf) {
-                        var diff = buf.toString();
+                var fileProcessPromises = [];
 
-                        // process diff data
-                    });
+                for (filename in files) {
+                    function fileProcess(resolve, reject) {
+                        
+                        var fileContent = Fs.readFileSync(filename).toString();
+
+                        var process = spawn("git", ["diff", "-U0", filename]);
+
+                        var diffData = [];
+                        process.stdout.on("data", function(buf) {
+                            var diff = buf.toString();
+
+                            // process diff data
+                            var diffRegex = ~/(?:^@@(?:[\s\S]*?)([\+\-\d,]+) ([\+\-\d,]+)(?:[\s\S]*?)(^[\+\-][\s\S]*?))(?=(?:^@|^\\|\n$))/gm;
+                            
+                            var nextDiffMatch = diff;
+                            while (diffRegex.match(nextDiffMatch)) {
+                                var diffObj = {
+                                    origLineChanges: diffRegex.matched(1),
+                                    modifiedLineChanges: diffRegex.matched(2),
+                                    matchedDiff: diffRegex.matched(3)
+                                };
+
+                                diffData.push(diffObj);
+
+                                // Set next match to continued diff string buffer
+                                nextDiffMatch = diffRegex.matchedRight();
+                            }
+                        });
+
+                        process.on("close", function(exitCode) {
+                            if (exitCode != 0) {
+                                Node.console.log("Failed getting diff for: " + filename);
+                                Node.process.exit(1);
+                            }
+
+                            if (diffData.length == 0) {
+                                trace("No changes for file: " + filename);
+                            } else {
+                                resolve(
+                                    {
+                                        filename: filename,
+                                        fileContent: fileContent, 
+                                        diffObjects: diffData 
+                                    }
+                                );
+                            }
+                        });
+
+                    }
+
+                    fileProcessPromises.push(
+                        new Promise(fileProcess)
+                    );
                 }
 
-                // get full file content
-                
+                Promise.all(fileProcessPromises).then(function(data) {
+                    response.json(data);
+                });
             });
-
-            // After geting diff files 
-            //  - create tmp dir
-            //  - cp file into tmp dir
-            //    - this will be the file locations for editing the conflicts
-            //  - send list of files and their corresponding diffs
         });
 
         app.listen(app.get('port'), function() {
