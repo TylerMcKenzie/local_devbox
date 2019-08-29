@@ -7,8 +7,27 @@ class AppView
 {
     private var root: Element = null;
 
+    private var style: String = '
+        table {
+            border: 1px solid lightgrey;
+        }
+
+        td {
+            border: 1px solid lightgrey;
+        }
+    ';
+
     public function new(rootElement: Element) {
         this.root = rootElement;
+        this.root.insertAdjacentHTML('beforebegin', this.renderStyle().outerHTML);
+    }
+
+    public function renderStyle(): Element
+    {
+        var styleElement = document.createElement("style");
+        styleElement.innerHTML = this.style;
+
+        return styleElement;
     }
 
     public function renderFile(fileData: Dynamic)
