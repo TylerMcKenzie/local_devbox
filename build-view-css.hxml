@@ -1,3 +1,3 @@
 -cmd if [ ! -d bin/js/public ]; then mkdir -p bin/js/public ; fi
 -cmd if [ ! -d bin/js/public/css ]; then mkdir -p bin/js/public/css ; fi
--cmd cp ./highlight/styles/github.css bin/js/public/css/highlight.css
+-cmd cp ./highlight/styles/atom-one-dark.css bin/js/public/css/highlight.css

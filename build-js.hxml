@@ -1,6 +1,8 @@
 -dce full
 #Build view js
 build-view-js.hxml
+#Build highlight
+build-view-css.hxml
 
 -D js-es=6
 
@@ -16,5 +18,6 @@ build-view-js.hxml
 -cmd if [ ! -d bin/js/public/js ]; then mkdir -p bin/js/public/js ; fi
 -cmd cp -r src/views/* bin/js/public/views/
 -cmd cp -r bin/view-js/* bin/js/public/js/
+-cmd cp ./highlight/highlight.pack.js bin/js/public/js/highlight.min.js
 
 # -cmd node bin/js/index.js

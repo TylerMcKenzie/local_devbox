@@ -1,5 +1,7 @@
 package src.js.mergetool.ui;
 
+import src.js.mergetool.externs.Highlight;
+
 import js.html.*;
 import js.Browser.*;
 
@@ -9,11 +11,20 @@ class AppView
 
     private var style: String = '
         table {
-            border: 1px solid lightgrey;
+            border-collapse: collapse;
         }
 
-        td {
-            border: 1px solid lightgrey;
+        td.hljs {
+            padding: 0 5px;
+        }
+
+        td pre {
+            min-height: 1px;
+        }
+
+        tr td:nth-child(2) {
+            padding: 0 5px;
+            text-align: center;
         }
     ';
 
@@ -44,19 +55,15 @@ class AppView
             var lineReg = ~/(\d*)(?:$|,)(\d*)/;
             if (lineReg.match(dObject.modifiedLineChanges)) {
                 var modifyLine = Std.string(lineReg.matched(1));
-                console.log(lineReg.matched(2));
                 modifiedLines[modifyLine] = dObject.matchedDiff;
             }
         }
-
-        console.log(modifiedLines);
 
         var table = document.createElement("table");
 
         var tableHead = document.createElement("tr");
 
         var headLineColumn = document.createElement("th");
-        headLineColumn.innerHTML = "Ln";
 
         var headChangesColumn = document.createElement("th");
 
@@ -70,20 +77,43 @@ class AppView
 
         var lineNumber = 1;
         var fileContentArray: Array<String> = fileContent.split("\n");
+
         for (line in fileContentArray) {
             var lineRowElement = document.createElement("tr");
 
             var lineNumberElement = document.createElement("td");
-            lineNumberElement.innerHTML = Std.string(lineNumber);
+            lineNumberElement.innerHTML = Std.string(lineNumber) + ".";
 
             var changesElement = document.createElement("td");
             if (modifiedLines[Std.string(lineNumber)] != null) {
-                changesElement.innerHTML ="<pre>" + modifiedLines[Std.string(lineNumber)] + "</pre>";
+                var modifiedLinesArray:Array<String> = modifiedLines[Std.string(lineNumber)].split("\n");
+                var hasRemovedLines = false;
+                var hasAddedLines = false;
+
+                for (lineChange in modifiedLinesArray) {
+                    if (StringTools.startsWith(lineChange, "-")) {
+                        hasRemovedLines = true;
+                    } else if (StringTools.startsWith(lineChange, "+")) {
+                        hasAddedLines = true;
+                    }
+                }
+
+                if (hasRemovedLines) {
+                    changesElement.innerHTML += "<div>-</div>";
+                }
+
+                if (hasAddedLines) {
+                    changesElement.innerHTML += "<div>+</div>";
+                }
             }
 
-
             var contentElement = document.createElement("td");
-            contentElement.innerHTML = "<pre>" + line + "</pre>";
+            var contentPreElement = document.createElement("pre");
+            contentPreElement.innerHTML = "<code class=\"haxe\">" + StringTools.htmlEscape(line) + "</code>";
+            
+            contentElement.appendChild(contentPreElement);
+
+            Highlight.highlightBlock(contentElement);
 
             lineRowElement.appendChild(lineNumberElement);
             lineRowElement.appendChild(changesElement);
