@@ -1,3 +1,3 @@
 build-js.hxml
 
--cmd node bin/js/index.js & ./node_modules/.bin/fast-live-reload -ns src/ -e "haxe build-js.hxml"
+-cmd ./node_modules/.bin/nodemon bin/js/index.js & ./node_modules/.bin/fast-live-reload -ns src/ -e "haxe build-js.hxml"
