@@ -20,11 +20,24 @@ class AppView
 
         td pre {
             min-height: 1px;
+            padding-left: 5px;
+        }
+
+        tr.hljs {
+            padding: 0 5px;
+        }
+
+        tr td:first-child, 
+        tr td:first-child [class*=hljs] {
+            width: 25px;
+            color: white;
         }
 
         tr td:nth-child(2) {
             padding: 0 5px;
+            width: 10px;
             text-align: center;
+            background: #3b414c;
         }
     ';
 
@@ -99,11 +112,11 @@ class AppView
                 }
 
                 if (hasRemovedLines) {
-                    changesElement.innerHTML += "<div>-</div>";
+                    changesElement.innerHTML += "<div style=\"color: red;\">-</div>";
                 }
 
                 if (hasAddedLines) {
-                    changesElement.innerHTML += "<div>+</div>";
+                    changesElement.innerHTML += "<div style=\"color: lightgreen;\">+</div>";
                 }
             }
 
@@ -113,11 +126,13 @@ class AppView
             
             contentElement.appendChild(contentPreElement);
 
-            Highlight.highlightBlock(contentElement);
+            // Highlight.highlightBlock(contentElement);
 
             lineRowElement.appendChild(lineNumberElement);
             lineRowElement.appendChild(changesElement);
             lineRowElement.appendChild(contentElement);
+
+            Highlight.highlightBlock(lineRowElement);
 
             table.appendChild(lineRowElement);
 
@@ -125,5 +140,6 @@ class AppView
         }
 
         root.appendChild(table);
+        // Highlight.initHighlighting();
     }
 }

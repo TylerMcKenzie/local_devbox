@@ -30,7 +30,7 @@ class MergeTool
             function (data: String) {
                 var fileData = haxe.Json.parse(data);
                 console.log(fileData);
-                view.renderFile(fileData[4]);
+                view.renderFile(fileData[1]);
             }
         );
 
